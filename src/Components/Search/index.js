@@ -3,7 +3,7 @@ import { SearchContainer, SearchBox } from './styles';
 
 
 const Search = ({ handleSearch, className }) => (
-    <SearchContainer className={className}>
+    <SearchContainer data-testid="search" className={className}>
         <SearchBox type="text" placeholder="Search" onKeyUp={handleSearch} />
     </SearchContainer>
 );

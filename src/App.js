@@ -1,12 +1,9 @@
 import React, { useEffect, useReducer } from 'react';
-import socketClient from 'socket.io-client';
 
 import OrderList from './Components/Order';
 import orderService from './Service/order';
+import connection from './Service/connection';
 import { AppWrapper, AppBody, Banner, OrderSearch, Label, Splash, Salad } from './styles.js';
-
-
-const ENDPOINT = "http://127.0.0.1:4000";
 
 const initialState = {
   order: [],
@@ -37,7 +34,6 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleSearch = (e) => {
-    console.log(e.target.value);
     dispatch({ type: 'search', payload: e.target.value });
   }
 
@@ -46,8 +42,7 @@ function App() {
   };
 
   useEffect(() => {
-    const socket = socketClient(ENDPOINT);
-    socket.on("order_event", handleSetData);
+    connection.getOrderData(handleSetData);
   }, [])
 
   return (
@@ -59,7 +54,7 @@ function App() {
             <Label>Your Order's</Label>
             <OrderSearch handleSearch={handleSearch} />
           </Banner>
-          {state.order && state.search === '' && <OrderList order={state.order} data-testid="order"></OrderList>}
+          {state.order && state.search === '' && <OrderList order={state.order}></OrderList>}
           {state.order && state.search !== '' && <OrderList order={state.filteredOrder}></OrderList>}
         </AppBody>
       </AppWrapper>

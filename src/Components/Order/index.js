@@ -5,7 +5,7 @@ import Avatar from '../Avatar'
 import { Table, Header, Row, Cell, Body } from './styles.js';
 
 const OrderList = ({ order }) => (
-    <Table>
+    <Table data-testid="order-table">
         <Header>
             <Row>
                 <Cell width={'20%'}>Customer</Cell>
