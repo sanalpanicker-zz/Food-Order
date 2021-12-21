@@ -1,4 +1,11 @@
 
+/**
+ * Updates Order data as its received and filter based on search string
+ * @param {object} incomingData 
+ * @param {object} previousData 
+ * @param {string} search 
+ * @returns object
+ */
 const updateOrder = (incomingData, previousData, search) => {
     const newOrders = [];
     incomingData.forEach((incomingItem) => {
@@ -13,7 +20,10 @@ const updateOrder = (incomingData, previousData, search) => {
         }
     });
     const orders = [...newOrders, ...previousData];
-    const filteredOrders = orders.filter(_matchPrice(search));
+    let filteredOrders = orders;
+    if (search) {
+        filteredOrders = filteredOrders.filter(_matchPrice(search));
+    }
     return { orders, filteredOrders };
 }
 
@@ -22,6 +32,7 @@ const updateOrder = (incomingData, previousData, search) => {
  * @param {string} search 
  * @returns 
  */
+//TODO: validation or cleanup of search string
 const _matchRegex = (search) => new RegExp(`^${search}`);
 
 /**

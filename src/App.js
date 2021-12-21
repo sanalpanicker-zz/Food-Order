@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import OrderList from './Components/Order';
+
 import orderService from './Service/order';
 import connection from './Service/connection';
-import { AppWrapper, AppBody, Banner, OrderSearch, Label, Splash, Salad } from './styles.js';
+import { AppWrapper, AppBody, Banner, OrderSearch, Label, Splash, Salad, Info } from './styles.js';
 
 const initialState = {
   order: [],
@@ -31,6 +32,7 @@ function reducer(state = initialState, action) {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleSearch = (e) => {
@@ -38,6 +40,7 @@ function App() {
   }
 
   const handleSetData = (data) => {
+    setLoading(false);
     dispatch({ type: 'order', payload: data });
   };
 
@@ -51,11 +54,12 @@ function App() {
       <AppWrapper>
         <AppBody>
           <Banner data-testid="banner">
-            <Label>Your Order's</Label>
+            <Label>Your Order's<br></br>
+              <Info>{state.search && `Showing ${state.filteredOrder.length} of ${state.order.length}`}</Info>
+            </Label>
             <OrderSearch handleSearch={handleSearch} />
           </Banner>
-          {state.order && state.search === '' && <OrderList order={state.order}></OrderList>}
-          {state.order && state.search !== '' && <OrderList order={state.filteredOrder}></OrderList>}
+          {!loading && <OrderList order={state.filteredOrder}></OrderList>}
         </AppBody>
       </AppWrapper>
       <Salad></Salad>
