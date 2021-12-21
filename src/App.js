@@ -59,7 +59,7 @@ function App() {
             </Label>
             <OrderSearch handleSearch={handleSearch} />
           </Banner>
-          {!loading && <OrderList order={state.filteredOrder}></OrderList>}
+          {loading? <div>Loading...</div> : <OrderList order={state.filteredOrder}></OrderList>}
         </AppBody>
       </AppWrapper>
       <Salad></Salad>
